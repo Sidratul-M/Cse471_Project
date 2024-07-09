@@ -38,14 +38,14 @@ const ChangePass = () => {
 
       axios.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
       setIsLogin(true);
-      localStorage.clear();
+      /*localStorage.clear();*/
       navigate("/login");
     } catch (err) {
       setError(err.response.data.message);
       setTimeout(() => {
         setError("");
       }, 5000);
-      navigate("/login");
+      /*navigate("/login");*/
     }
   };
 
@@ -106,9 +106,10 @@ const ChangePass = () => {
             <div className="mt-2">
               <input
                 id="currentPassword"
-                type="currentPassword"
+                type="password"
                 name="currentPassword"
-                autoComplete="currentPassword"
+                autoComplete="current-password"
+                value={currentPassword}
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 focusBorderColor="black"
@@ -117,10 +118,11 @@ const ChangePass = () => {
             </div>
             <div className="mt-2">
               <input
-                id="currentPassword"
-                type="currentPassword"
-                name="currentPassword"
-                autoComplete="currentPassword"
+                id="newPassword"
+                type="password"
+                name="newPassword"
+                autoComplete="new-password"
+                value={newPassword}
                 onChange={(e) => setPasswordnew(e.target.value)}
                 required
                 focusBorderColor="black"
