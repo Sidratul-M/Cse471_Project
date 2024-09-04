@@ -11,6 +11,7 @@ const adminRoutes = require("./routes/adminRoute");
 const auctionRoutes = require("./routes/auctionRoute");
 const paymentRoutes = require("./routes/paymentRoutes");
 const Report = require("./models/report");
+const notificationsRoute = require('./routes/notifications');
 
 // Create express app
 const app = express();
@@ -18,7 +19,7 @@ const app = express();
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
-
+app.use('/api/notifications', notificationsRoute);
 // Connect to MongoDB database
 mongoose
   .connect(process.env.MONGODB_URI, {
@@ -35,7 +36,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/customer/", customerRoutes);
 app.use("/api/admin/", adminRoutes);
-app.use("/api/auction", auctionRoutes);
+app.use("/api/auctoin", auctionRoutes);/////////////////##################
 app.use("/api/payment", paymentRoutes);
 
 app.get("/api/report", async (req, res) => {
