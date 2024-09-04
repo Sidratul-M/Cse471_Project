@@ -37,13 +37,15 @@ const ChangePass = () => {
 
       axios.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
       setIsLogin(true);
-      navigate("/login"); // Redirect to login page after password change
+      localStorage.clear();
+      navigate("/login");
     } catch (err) {
       const errorMsg = err.response?.data?.message || "An error occurred";
       setError(errorMsg);
       setTimeout(() => {
         setError("");
       }, 5000);
+      navigate("/login");
     }
   };
 
@@ -96,9 +98,8 @@ const ChangePass = () => {
                 id="currentPassword"
                 type="password"
                 name="currentPassword"
-                autoComplete="current-password"
-                value={currentPassword}
-                onChange={(e) => setCurrentPassword(e.target.value)}
+                autoComplete="currentPassword"
+                onChange={(e) => setPassword(e.target.value)}
                 required
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
@@ -114,12 +115,11 @@ const ChangePass = () => {
             </label>
             <div className="mt-2">
               <input
-                id="newPassword"
-                type="password"
-                name="newPassword"
-                autoComplete="new-password"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
+                id="currentPassword"
+                type="currentPassword"
+                name="currentPassword"
+                autoComplete="currentPassword"
+                onChange={(e) => setPasswordnew(e.target.value)}
                 required
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
