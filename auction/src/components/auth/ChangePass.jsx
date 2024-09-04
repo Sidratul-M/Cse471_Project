@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const ChangePass = () => {
   const [email, setEmail] = useState("");
-  const [currentPassword, setPassword] = useState("");
-  const [newPassword, setPasswordnew] = useState("");
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
   const [error, setError] = useState("");
   const [isLogin, setIsLogin] = useState(false);
 
@@ -20,7 +19,7 @@ const ChangePass = () => {
     }
   }, []);
 
-  const handleLogin = async (e) => {
+  const handleChangePassword = async (e) => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
@@ -31,21 +30,20 @@ const ChangePass = () => {
           newPassword,
         }
       );
-      console.log(data.token);
 
+      // Assuming the API responds with a new token after password change
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data));
 
       axios.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
       setIsLogin(true);
-      localStorage.clear();
-      navigate("/login");
+      navigate("/login"); // Redirect to login page after password change
     } catch (err) {
-      setError(err.response.data.message);
+      const errorMsg = err.response?.data?.message || "An error occurred";
+      setError(errorMsg);
       setTimeout(() => {
         setError("");
       }, 5000);
-      navigate("/login");
     }
   };
 
@@ -87,54 +85,59 @@ const ChangePass = () => {
           </div>
 
           <div>
-            <div className="flex items-center justify-between">
               <label
-                htmlFor="password"
+              htmlFor="currentPassword"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
-                Password
+              Current Password
               </label>
-              <div className="text-sm">
-                <a
-                  href="#"
-                  className="font-semibold text-indigo-600 hover:text-indigo-500"
-                >
-                  Forgot password?
-                </a>
-              </div>
-            </div>
             <div className="mt-2">
               <input
                 id="currentPassword"
-                type="currentPassword"
+                type="password"
                 name="currentPassword"
-                autoComplete="currentPassword"
-                onChange={(e) => setPassword(e.target.value)}
+                autoComplete="current-password"
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
                 required
-                focusBorderColor="black"
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-              />
-            </div>
-            <div className="mt-2">
-              <input
-                id="currentPassword"
-                type="currentPassword"
-                name="currentPassword"
-                autoComplete="currentPassword"
-                onChange={(e) => setPasswordnew(e.target.value)}
-                required
-                focusBorderColor="black"
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
             </div>
           </div>
 
           <div>
+            <label
+              htmlFor="newPassword"
+              className="block text-sm font-medium leading-6 text-gray-900"
+            >
+              New Password
+            </label>
+            <div className="mt-2">
+              <input
+                id="newPassword"
+                type="password"
+                name="newPassword"
+                autoComplete="new-password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                required
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              />
+            </div>
+          </div>
+
+          {error && (
+            <div className="text-red-500 text-sm">
+              {error}
+            </div>
+          )}
+
+          <div>
             <button
               type="submit"
               className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
-              Change
+              Change Password
             </button>
           </div>
         </form>
